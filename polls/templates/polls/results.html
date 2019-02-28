@@ -1,9 +1,20 @@
-<h1>{{ question.question_text }}</h1>
+{% extends "templates/base.html" %}
 
-<ul>
-{% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
-{% endfor %}
-</ul>
+{% block content %}
+    <br>
+    <div class="row justify-content-center">
+        <div class="col-5">
+            <h1>{{ question.question_text }}</h1>
 
-<a href="{% url 'polls:details' question.id %}">Vote again?</a>
+            <ul class="list-group">
+            {% for choice in question.choice_set.all %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ choice.choice_text }} <span class="badge badge-primary badge-pill">{{ choice.votes }}</span>
+                </li>
+            {% endfor %}
+            </ul>
+            <br>
+            <h5><a href="{% url 'polls:details' question.id %}">Vote again?</a></h5>
+        </div>
+    </div>
+{% endblock %}

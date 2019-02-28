@@ -11,6 +11,7 @@ ALLOWED_HOSTS = []
 SECRET_KEY = SECRET_KEY
 
 INSTALLED_APPS = [
+    'users.apps.UsersConfig',
     'polls.apps.PollsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -35,7 +36,7 @@ ROOT_URLCONF = 'first_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), BASE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

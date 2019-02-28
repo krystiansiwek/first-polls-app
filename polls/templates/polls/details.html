@@ -1,20 +1,21 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+{% extends "templates/base.html" %}
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-<div class="container">
-    <h1>{{ question.question_text }}</h1>
-    {% if error_message %} <p><strong>{{ error_message }}</strong></p> {% endif %}
-    <form action="{% url 'polls:vote' question.id %}" method="POST">
-    {% csrf_token %}
-    {% for choice in question.choice_set.all %}
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-            <label class="form-check-label" for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br><br>
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-5">
+        <br>
+        <h1>{{ question.question_text }}</h1>
+        {% if error_message %} <p><strong>{{ error_message }}</strong></p> {% endif %}
+        <form action="{% url 'polls:vote' question.id %}" method="POST">
+            {% csrf_token %}
+            {% for choice in question.choice_set.all %}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                <label class="form-check-label" for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br><br>
+            </div>
+            {% endfor %}
+            <input class="btn btn-outline-primary" type="submit" value="Vote">
+            </form>
         </div>
-    {% endfor %}
-    <input class="btn btn-outline-primary" type="submit" value="Vote">
-    </form>
-</div>
+    </div>
+{% endblock %}

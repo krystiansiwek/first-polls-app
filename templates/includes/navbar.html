@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="{% url 'polls:index' %}">POLLS</a>
+    <div class="collapse navbar-collapse d-flex flex-row-reverse">
+        <ul class="navbar-nav" id="navbarResponsive">
+
+            <div class="p-2">
+                <li clas="nav-item">
+                    <a clas="nav-link" href="#" style="color: white">Login</a>
+                </li>
+            </div>
+
+            <div class="p-2">
+                <li clas="nav-item">
+                    <a clas="nav-link" href="{% url 'users:register' %}" style="color: white">Register</a>
+                </li>
+            </div>
+
+        </ul>
+    </div>
+</nav>
