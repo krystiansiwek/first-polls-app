@@ -13,6 +13,7 @@ SECRET_KEY = SECRET_KEY
 INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'polls.apps.PollsConfig',
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -84,3 +85,12 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = 'polls:index'
+
+LOGIN_URL = 'login'
