@@ -1,0 +1,20 @@
+{% extends "templates/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <br>
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Create new poll</legend>
+            {{ new_question_form|crispy }}
+            {{ choice_form.management_form }}
+            {% for choice in choice_form %}
+                {{ choice|crispy }}
+            {% endfor %}
+        </fieldset>
+        <div class="form-group">
+            <input class="btn btn-outline-primary" type="submit" value="Create">
+        </div>
+    </form>
+    <br>
+{% endblock %}

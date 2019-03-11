@@ -1,10 +1,15 @@
 from django.utils import timezone
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.forms import modelformset_factory
 
 from .models import Question, Choice
+from .forms import CreateQuestionView, AddChoiceView
+
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
@@ -49,3 +54,35 @@ def vote(request, question_id):
         selected_choice.votes += 1
         selected_choice.save()
         return HttpResponseRedirect(reverse('polls:results', args=[question.id]))
+
+
+@login_required
+def new_poll(request):
+    choices_formset = modelformset_factory(Choice, form=AddChoiceView, fields=('choice_text',), extra=3)
+
+    if request.method == 'POST':
+        new_question_form = CreateQuestionView(request.POST)
+        choice_form = choices_formset(request.POST, request.FILES)
+
+        if new_question_form.is_valid() and choice_form.is_valid():
+            question = new_question_form.save(commit=False)
+            question.author = request.user
+            question.save()
+
+            for form in choice_form:
+                choice = form.save(commit=False)
+                choice.question = question
+                choice.save()
+            messages.success(request, f'Poll added!')
+            return redirect('polls:index')
+    else:
+        new_question_form = CreateQuestionView()
+        choice_form = choices_formset(queryset=Choice.objects.none(),)
+
+    context = {
+        'new_question_form': new_question_form,
+        'choice_form': choice_form,
+    }
+    return render(request,
+                  'polls/new_poll.html',
+                  context)

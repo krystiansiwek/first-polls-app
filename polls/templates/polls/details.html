@@ -4,6 +4,7 @@
 <div class="row justify-content-center">
     <div class="col-5">
         <br>
+        <small><a href="#">{{ question.author }}</a></small>
         <h1>{{ question.question_text }}</h1>
         {% if error_message %} <p><strong>{{ error_message }}</strong></p> {% endif %}
         <form action="{% url 'polls:vote' question.id %}" method="POST">

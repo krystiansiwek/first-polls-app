@@ -11,13 +11,14 @@ def register(request):
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account successfully created for: {username}. You can log in now!')
-            return redirect('login')
+            return redirect('users:login')
     else:
         form = UserRegisterForm()
     return render(request,
                   'users/register.html',
                   {'form': form}
                   )
+
 
 @login_required
 def profile(request):
@@ -32,7 +33,7 @@ def profile(request):
             user_form.save()
             profile_form.save()
             messages.success(request, f'Account updated!')
-            return redirect('profile')
+            return redirect('users:profile')
     else:
         user_form = UserUpdateForm(instance=request.user)
         profile_form = ProfileUpdateForm(instance=request.user.profile)
