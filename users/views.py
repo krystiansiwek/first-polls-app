@@ -14,9 +14,10 @@ def register(request):
             return redirect('users:login')
     else:
         form = UserRegisterForm()
+    context = {'form': form}
     return render(request,
                   'users/register.html',
-                  {'form': form}
+                  context
                   )
 
 

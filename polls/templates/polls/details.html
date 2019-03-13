@@ -15,8 +15,12 @@
                 <label class="form-check-label" for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br><br>
             </div>
             {% endfor %}
-            <input class="btn btn-outline-primary" type="submit" value="Vote">
-            </form>
-        </div>
+            <input class="btn btn-outline-primary" type="submit" value="Vote" name="vote">
+            {% if user.is_authenticated and user == question.author %}
+                <input class="btn btn-outline-danger" type="submit" value="Delete"
+                       name="delete" formaction="{% url 'polls:delete_poll' question.id %}">
+            {% endif %}
+        </form>
     </div>
+</div>
 {% endblock %}

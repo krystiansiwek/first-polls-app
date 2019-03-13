@@ -1,7 +1,5 @@
 from django.utils import timezone
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -41,19 +39,36 @@ class ResultsView(generic.DetailView):
         )
 
 
-def vote(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
+@login_required
+def delete_poll(request, pk):
+    question = get_object_or_404(Question, pk=pk)
+
+    if request.method == 'POST':
+        if request.POST.get('delete') and request.user == question.author:
+            messages.success(request, 'Poll deleted successfully')
+            question.delete()
+            return redirect('polls:index')
+        else:
+            return render(request,
+                          'polls/details.html',
+                          {'question': question,
+                           'error_message': 'You don\'t have permission to do that'})
+
+
+@login_required
+def vote(request, pk):
+    question = get_object_or_404(Question, pk=pk)
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except(KeyError, Choice.DoesNotExist):
         return render(request,
                       'polls/details.html',
-                      {'question': question,
+                      {'poll': question,
                        'error_message': 'You didn\'t select any choice. '})
     else:
         selected_choice.votes += 1
         selected_choice.save()
-        return HttpResponseRedirect(reverse('polls:results', args=[question.id]))
+        return redirect('polls:results', pk=pk)
 
 
 @login_required
@@ -86,3 +101,6 @@ def new_poll(request):
     return render(request,
                   'polls/new_poll.html',
                   context)
+
+
+
