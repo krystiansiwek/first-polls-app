@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
+from django.views import generic
+from polls.models import Question
+from .models import Profile
 
 
 def register(request):
@@ -47,3 +50,17 @@ def profile(request):
     return render(request,
                   'users/profile.html',
                   context)
+
+
+class PublicProfile(generic.ListView):
+    template_name = 'polls/details.html'
+    context_object_name = 'user_questions'
+
+    def get_queryset(self):
+        return Question.objects.filter(author__username=self.kwargs['username'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['questions_author'] = self.kwargs['username']
+        context['author_profile'] = Profile.objects.get(user__username=self.kwargs['username'])
+        return context

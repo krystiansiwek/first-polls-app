@@ -7,9 +7,11 @@ from django.contrib.auth.models import User
 
 
 class Question(models.Model):
-    author = models.OneToOneField(User,
-                                  related_name='poll_author',
-                                  on_delete=models.CASCADE)
+    author = models.ForeignKey(User,
+                               related_name='poll_author',
+                               on_delete=models.CASCADE,
+                               null=True,
+                               blank=True)
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published', default=timezone.now)
 
@@ -26,7 +28,7 @@ class Question(models.Model):
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200)
+    choice_text = models.CharField(max_length=200, verbose_name='Choice')
     votes = models.IntegerField(default=0)
 
     def __str__(self):

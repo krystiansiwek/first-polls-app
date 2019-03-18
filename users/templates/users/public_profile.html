@@ -1,0 +1,18 @@
+{% extends "templates/base.html" %}
+{% block content %}
+    <div class="media">
+        <img class="rounded-circle account-img" src="{{ author_profile.image.url }}"
+             style="object-fit: cover" width="100px" height="100px">
+        <div class="media-body">
+            <legend class="border-bottom mb-4">
+                <h2>{{ questions_author }} Questions</h2>
+            </legend>
+        </div>
+    </div>
+    <br>
+    <ul class="list-group">
+        {% for question in user_questions %}
+            <li class="list-group-item"><a href="{% url 'polls:details' question.id %}">{{ question.question_text }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

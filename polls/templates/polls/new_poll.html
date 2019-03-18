@@ -3,9 +3,11 @@
 {% block content %}
     <br>
     <form method="POST">
+        <div class="row spacer">
+            <legend class="border-bottom mb-4">Create new poll</legend>
+        </div>
         {% csrf_token %}
         <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Create new poll</legend>
             {{ new_question_form|crispy }}
             {{ choice_form.management_form }}
             {% for choice in choice_form %}
