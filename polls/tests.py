@@ -1,8 +1,10 @@
 import datetime
 
-from django.test import TestCase, Client
+from django.test import TestCase
+from django.test import Client
 from django.utils import timezone
 from django.urls import reverse
+from django.contrib.auth.forms import User
 
 from .models import Question
 
@@ -93,3 +95,15 @@ class QuestionResultsViewTests(TestCase):
         past_question = create_question(question_text='Past question', days=-25)
         response = self.client.get(reverse('polls:results', args=[past_question.id]))
         self.assertContains(response, past_question.question_text)
+
+
+class NewPollViewTests(TestCase):
+    def test_new_poll_not_logged_in(self):
+        response = self.client.get(reverse('polls:new_poll'))
+        self.assertRedirects(response, '/login/?next=/polls/new/', 302)
+
+    def test_new_poll_logged_in(self):
+        user = User.objects.create_user('testuser')
+        self.client.force_login(user)
+        response = self.client.get(reverse('polls:new_poll'))
+        self.assertEqual(response.status_code, 200)

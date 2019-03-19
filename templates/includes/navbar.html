@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-primary">
     <a class="navbar-brand" href="{% url 'polls:index' %}">POLLS</a>
-    <div class="collapse navbar-collapse d-flex flex-row-reverse">
 
+    <div class="collapse navbar-collapse d-flex flex-row-reverse">
         <!-- navbar right side -->
         <div class="navbar-nav">
 
@@ -11,7 +11,14 @@
             </div>
 
             <div class="p-2">
-                <a class="nav-item nav-link" href="{% url 'users:profile' %}" style="color: white">{{ user.username }}</a>
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false" style="color: white">{{ user.username }}</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'users:profile' %}">Edit Profile</a>
+                        <a class="dropdown-item" href="{% url 'users:public_profile' user.username %}">Your Polls</a>
+                    </div>
+                </div>
             </div>
 
             <div class="p-2">

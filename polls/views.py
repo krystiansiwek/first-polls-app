@@ -54,7 +54,6 @@ def delete_poll(request, pk):
                            'error_message': 'You don\'t have permission to do that'})
 
 
-@login_required
 def vote(request, pk):
     question = get_object_or_404(Question, pk=pk)
     try:
